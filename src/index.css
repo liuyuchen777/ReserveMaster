@@ -1,13 +1,110 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* main container of App */
+.container {
+  max-width: 1000px;
+  margin: 10px auto;
+  overflow: auto;
+  min-height: 300px;
+  border: 1px solid steelblue;
+  padding: 30px;
+  border-radius: 5px;
+}
+
+.sub-container {
+  max-width: 920px;
+  margin: 30px auto;
+  overflow: auto;
+  min-height: 100px;
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.equipment {
+  max-width: 900px;
+  margin:5px auto;
+  min-height: 30px;
+  border: none;
+  padding: 0px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+footer {
+  margin-top: 30px;
+  text-align: center;
+}
+
+/* date button element */
+.btn {
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+  text-align: left;
+}
+
+.btn2 {
+  display: inline-block;
+  color:black;
+  border: 1px solid;
+  width: 6em;
+  height: 3em;
+  margin: 0px;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: inherit;
+  text-align: center;
+}
+
+.btn3 {
+  display: inline-block;
+  background: rgb(134, 184, 224);
+  color:black;
+  border: 1px solid;
+  text-align: center;
+  width: 10em;
+  height: 3em;
+  margin: 0px;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: inherit;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
 }
