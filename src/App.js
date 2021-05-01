@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-04-30 06:48:18
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-04-30 14:48:02
+ * @LastEditTime: 2021-04-30 23:09:12
  * @Description: 
  * @FilePath: /reserve_master/src/App.js
  * @GitHub: https://github.com/liuyuchen777
@@ -10,7 +10,7 @@
 
 import Footer from './components/Footer'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import About from './components/About'
+import About from './About'
 import Header from './components/Header'
 import Day from './components/Day'
 import Equipments from './components/Equipments'
@@ -24,6 +24,7 @@ class Eqp {
     for (let i = 0; i < this.Appoint.length; i++) {
       this.Appoint[i] = new Array(8).fill(-1)
     }
+    // some test change
   }
 
   getName() {
@@ -40,6 +41,21 @@ class Eqp {
   }
 }
 
+class User {
+  constructor(name, id) {
+    this.name = name
+    this.id = id
+  }
+
+  getName() {
+    return this.name
+  }
+
+  getID() {
+    return this.id
+  }
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -49,7 +65,10 @@ class App extends React.Component {
     this.date = ['2020/04/26', '2020/04/27', '2020/04/28', '2020/04/29', '2020/04/30', '2020/05/01', '2020/05/02']
     this.week = ['月', '火', '水', '木', '金', '土', '日']
     this.equipment_list = [new Eqp("computer1"), new Eqp("computer2"), new Eqp("computer3")]
+    // current user id
     this.user = 4
+    // all user
+    
   }
 
   render() {
