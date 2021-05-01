@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-04-30 07:29:14
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-04-30 14:45:25
+ * @LastEditTime: 2021-05-01 10:08:11
  * @Description: 
  * @FilePath: /reserve_master/src/components/Equipment.js
  * @GitHub: https://github.com/liuyuchen777
@@ -20,6 +20,32 @@ class Equipment extends Component {
         this.timeList = ['8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00']
     }
 
+    colorSet(number) {
+        if (this.state.stateList[number] === -1) {
+            return 'white'
+        } else if (this.state.stateList[number] === this.props.user) {
+            return 'rgb(134, 184, 224)'
+        } else {
+            // other user have already booked
+            return 'gray'
+        }
+    }
+
+    textSet(number) {
+        if (this.state.stateList[number] === -1) {
+            return this.timeList[number]+'\nAvaliable'
+        } else {
+            const user = this.props.allUser.find(element => element.id===this.state.stateList[number])
+            let username
+            if (user === undefined) {
+                username = "stranger"
+            } else {
+                username = user.getName()
+            }
+            return this.timeList[number]+'\n'+username
+        }
+    }
+
     render() {
         const numbers = [0, 1, 2, 3, 4, 5, 6, 7]
         const listItems = numbers.map((number) => 
@@ -31,7 +57,7 @@ class Equipment extends Component {
                         stateList: temp
                     })
                     this.props.item.changeAppoint(this.props.day, number, this.props.user)
-                } else {
+                } else if (this.state.stateList[number] === this.props.user) {
                     let temp = this.state.stateList
                     temp[number] = -1
                     this.setState({
@@ -39,13 +65,13 @@ class Equipment extends Component {
                     })
                     this.props.item.changeAppoint(this.props.day, number, -1)
                 }
-            }} text ={this.timeList[number]} color={this.state.stateList[number]!==-1 ? 'rgb(134, 184, 224)' : 'white'} />
+            }} text ={this.textSet(number)} color={this.colorSet(number)} />
         )
 
         // console.log(this.props.item)
 
         return (
-            <div>
+            <div >
                 <button className="btn3">{this.props.item.getName()}</button>
                 &emsp;
                 {listItems[0]}

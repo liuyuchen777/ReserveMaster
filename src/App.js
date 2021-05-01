@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-04-30 06:48:18
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-04-30 23:09:12
+ * @LastEditTime: 2021-05-01 12:03:41
  * @Description: 
  * @FilePath: /reserve_master/src/App.js
  * @GitHub: https://github.com/liuyuchen777
@@ -16,6 +16,16 @@ import Day from './components/Day'
 import Equipments from './components/Equipments'
 import React from 'react'
 import Submit from './components/Submit'
+import Login from './Login'
+import LoginFail from './LoginFail'
+import Logout from './components/Logout'
+
+/*
+ * Equipment Status:
+ * -1: no user selecte (white)
+ * positive number (not user): other user selected) (gray with name under time)
+ * user: this user selected (blue) 
+ */
 
 class Eqp {
   constructor(name) {
@@ -25,6 +35,7 @@ class Eqp {
       this.Appoint[i] = new Array(8).fill(-1)
     }
     // some test change
+    this.Appoint[2][2] = 8
   }
 
   getName() {
@@ -42,9 +53,14 @@ class Eqp {
 }
 
 class User {
-  constructor(name, id) {
+  constructor(name, id, password) {
     this.name = name
     this.id = id
+    this.password = password
+  }
+
+  getPasswd() {
+    return this.password
   }
 
   getName() {
@@ -60,15 +76,16 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      showFlod: new Array(7).fill(false)
+      showFlod: new Array(7).fill(false),
+      user: -1,
+      login_info: "Hello, Stranger!"
     }
     this.date = ['2020/04/26', '2020/04/27', '2020/04/28', '2020/04/29', '2020/04/30', '2020/05/01', '2020/05/02']
     this.week = ['月', '火', '水', '木', '金', '土', '日']
-    this.equipment_list = [new Eqp("computer1"), new Eqp("computer2"), new Eqp("computer3")]
+    this.equipment_list = [new Eqp("Atomic Emission Spectronmeter"), new Eqp("Gas Chromatograph"), new Eqp("Size Exclusion Chromatograph")]
     // current user id
-    this.user = 4
     // all user
-    
+    this.allUser = [new User("liuyuchen", 7, "123456"), new User("zhujunyi", 8, "123456")]
   }
 
   render() {
@@ -81,7 +98,7 @@ class App extends React.Component {
           this.setState({showFlod: temp})
         }} day={this.date[number]} yobi={this.week[number]}/>
 
-        {this.state.showFlod[number] ? <Equipments el={this.equipment_list} day={number} user={this.user}/> : ''}
+        {this.state.showFlod[number] ? <Equipments login_info={this.state.login_info} el={this.equipment_list} day={number} user={this.state.user} allUser={this.allUser}/> : ''}
       </div>      
     )
 
@@ -89,13 +106,28 @@ class App extends React.Component {
       <Router>
         <div className="container">
           <Header />
-          <Route path='/' exact render={(props) => (
+          <Route path='/' exact render={() => (
+            <div>
+              <Login changeUser={(data) => this.setState({user: data})} allUser={this.allUser} changeInfo={(data) => this.setState({login_info: data})} />
+            </div>
+          )} />
+          <Route path='/main' exact render={() => (
             <div>
               <ul>{listItems}</ul>
-              <Submit />
+              <div>
+                <center>
+                <Submit />
+                <Logout changeUser={(data) => this.setState({user: data})} changeInfo={(data) => this.setState({login_info: data})}/>
+                </center>
+              </div>
             </div>
             // submit buttom
-          )}/>
+          )} />
+          <Route path='/fail' exact render={() => (
+            <div>
+              <LoginFail login_info={this.state.login_info}/>
+            </div>
+          )} />
           <Route path='/about' component={About} />
           <Footer />
         </div>
