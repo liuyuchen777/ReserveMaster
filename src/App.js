@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-04-30 06:48:18
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-05-01 12:03:41
+ * @LastEditTime: 2021-05-01 12:34:09
  * @Description: 
  * @FilePath: /reserve_master/src/App.js
  * @GitHub: https://github.com/liuyuchen777
@@ -19,6 +19,8 @@ import Submit from './components/Submit'
 import Login from './Login'
 import LoginFail from './LoginFail'
 import Logout from './components/Logout'
+import Week from './components/Week'
+import Placeholder from './components/Placeholder'
 
 /*
  * Equipment Status:
@@ -113,11 +115,18 @@ class App extends React.Component {
           )} />
           <Route path='/main' exact render={() => (
             <div>
+              <div>
+                <center>
+                  <Week text="<" />
+                  <Placeholder text="This Week" />
+                  <Week text=">" />
+                </center>
+              </div>
               <ul>{listItems}</ul>
               <div>
                 <center>
                 <Submit />
-                <Logout changeUser={(data) => this.setState({user: data})} changeInfo={(data) => this.setState({login_info: data})}/>
+                <Logout allFlod={() => this.setState({showFlod: new Array(7).fill(false)})} changeUser={(data) => this.setState({user: data})} changeInfo={(data) => this.setState({login_info: data})}/>
                 </center>
               </div>
             </div>
@@ -128,7 +137,11 @@ class App extends React.Component {
               <LoginFail login_info={this.state.login_info}/>
             </div>
           )} />
-          <Route path='/about' component={About} />
+          <Route path='/about' exact render={() => (
+            <div>
+              <About backState={this.state.user} />
+            </div>
+          )} />
           <Footer />
         </div>
       </Router>

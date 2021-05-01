@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-05-01 10:10:36
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-05-01 11:50:55
+ * @LastEditTime: 2021-05-01 12:08:58
  * @Description: 
  * @FilePath: /reserve_master/src/Login.js
  * @GitHub: https://github.com/liuyuchen777
@@ -42,7 +42,6 @@ function Login(props) {
         
     
         // final work
-        setUsername('')
         setPassword('')
     }
 

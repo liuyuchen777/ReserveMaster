@@ -108,6 +108,21 @@ footer {
   text-align: center;
 }
 
+/* week change button */
+.btn5 {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 15px;
+  width: 10em;
+  font-family: inherit;
+  text-align: center;
+}
+
 .btn:focus {
   outline: none;
 }
