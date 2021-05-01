@@ -108,7 +108,7 @@ footer {
   text-align: center;
 }
 
-/* week change button */
+/* week button */
 .btn5 {
   background: #000;
   color: #fff;
@@ -118,7 +118,7 @@ footer {
   border-radius: 5px;
   text-decoration: none;
   font-size: 15px;
-  width: 10em;
+  width: 15em;
   font-family: inherit;
   text-align: center;
 }

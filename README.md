@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-04-30 15:05:41
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-05-01 12:07:27
+ * @LastEditTime: 2021-05-01 23:55:36
  * @Description: 
  * @FilePath: /reserve_master/README.md
  * @GitHub: https://github.com/liuyuchen777
@@ -25,5 +25,7 @@ A simple react exampel for laboratory apparatus appointemnt.
 - [x] user login
 
 **2021/5/2**
+- [x] change week
+- [x] optimize login 
 - [] database design
 - [] fentch

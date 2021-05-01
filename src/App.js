@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-04-30 06:48:18
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-05-01 12:34:09
+ * @LastEditTime: 2021-05-01 23:52:25
  * @Description: 
  * @FilePath: /reserve_master/src/App.js
  * @GitHub: https://github.com/liuyuchen777
@@ -21,6 +21,8 @@ import LoginFail from './LoginFail'
 import Logout from './components/Logout'
 import Week from './components/Week'
 import Placeholder from './components/Placeholder'
+import {getThisWeek, getNextWeek, getNextNextWeek} from  './utils/weekFun'
+import { Link } from 'react-router-dom'
 
 /*
  * Equipment Status:
@@ -32,24 +34,27 @@ import Placeholder from './components/Placeholder'
 class Eqp {
   constructor(name) {
     this.name = name
-    this.Appoint = new Array(7)
+    this.Appoint = new Array(3)
     for (let i = 0; i < this.Appoint.length; i++) {
-      this.Appoint[i] = new Array(8).fill(-1)
+      this.Appoint[i] = new Array(7)
+      for (let j=0; j < this.Appoint[i].length; j++) {
+        this.Appoint[i][j] = new Array(8).fill(-1)
+      }
     }
     // some test change
-    this.Appoint[2][2] = 8
+    this.Appoint[0][2][2] = 8
   }
 
   getName() {
     return this.name
   }
 
-  getState(day, time) {
-    return this.Appoint[day][time]
+  getState(week, day, time) {
+    return this.Appoint[week][day][time]
   }
 
-  changeAppoint(day, time, people) {
-    this.Appoint[day][time] = people
+  changeAppoint(week, day, time, people) {
+    this.Appoint[week][day][time] = people
     console.log(this.Appoint)
   }
 }
@@ -80,9 +85,14 @@ class App extends React.Component {
     this.state = {
       showFlod: new Array(7).fill(false),
       user: -1,
-      login_info: "Hello, Stranger!"
+      login_info: "Hello, Stranger!",
+      week_status: 0
     }
-    this.date = ['2020/04/26', '2020/04/27', '2020/04/28', '2020/04/29', '2020/04/30', '2020/05/01', '2020/05/02']
+    this.date = [
+      getThisWeek(),
+      getNextWeek(),
+      getNextNextWeek()
+    ]
     this.week = ['月', '火', '水', '木', '金', '土', '日']
     this.equipment_list = [new Eqp("Atomic Emission Spectronmeter"), new Eqp("Gas Chromatograph"), new Eqp("Size Exclusion Chromatograph")]
     // current user id
@@ -98,16 +108,31 @@ class App extends React.Component {
           let temp = this.state.showFlod
           temp[number] = !temp[number]
           this.setState({showFlod: temp})
-        }} day={this.date[number]} yobi={this.week[number]}/>
+        }} day={this.date[this.state.week_status][number]} yobi={this.week[number]}/>
 
-        {this.state.showFlod[number] ? <Equipments login_info={this.state.login_info} el={this.equipment_list} day={number} user={this.state.user} allUser={this.allUser}/> : ''}
+        {this.state.showFlod[number] ? <Equipments login_info={this.state.login_info} el={this.equipment_list} 
+        day={number} user={this.state.user} allUser={this.allUser} week={this.state.week_status}/> : ''}
       </div>      
+    )
+
+    const nullComponent = (
+      <div>
+      </div>
+    )
+    
+    const needLogin = (
+      <div>
+        <center>
+          <h2>You Need Login</h2>
+          <Link to="/">Go Back</Link>
+        </center>
+      </div>
     )
 
     return (
       <Router>
         <div className="container">
-          <Header />
+          <Header user={this.state.user} allUser={this.allUser} />
           <Route path='/' exact render={() => (
             <div>
               <Login changeUser={(data) => this.setState({user: data})} allUser={this.allUser} changeInfo={(data) => this.setState({login_info: data})} />
@@ -116,18 +141,22 @@ class App extends React.Component {
           <Route path='/main' exact render={() => (
             <div>
               <div>
+                {this.state.user === -1 ? nullComponent :
                 <center>
-                  <Week text="<" />
-                  <Placeholder text="This Week" />
-                  <Week text=">" />
+                  <Week text="<" onClick={() => {this.setState({week_status: (this.state.week_status===0 ? this.state.week_status : this.state.week_status-1)})}} />
+                  <Placeholder text={this.state.week_status===0 ? "This Week" : this.state.week_status===1 ? "Next Week" : "Next Next Week"} />
+                  <Week text=">" onClick={() => {this.setState({week_status: (this.state.week_status===2 ? this.state.week_status : this.state.week_status+1)})}}/>
                 </center>
+                }
               </div>
-              <ul>{listItems}</ul>
+              <ul>{this.state.user===-1 ? needLogin : listItems}</ul>
               <div>
+                {this.state.user === -1 ? nullComponent :
                 <center>
                 <Submit />
                 <Logout allFlod={() => this.setState({showFlod: new Array(7).fill(false)})} changeUser={(data) => this.setState({user: data})} changeInfo={(data) => this.setState({login_info: data})}/>
                 </center>
+                }
               </div>
             </div>
             // submit buttom
