@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-04-30 09:15:54
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-05-01 23:04:03
+ * @LastEditTime: 2021-05-03 10:08:44
  * @Description: 
  * @FilePath: /reserve_master/src/components/Equipments.js
  * @GitHub: https://github.com/liuyuchen777
@@ -16,7 +16,7 @@ function Equipments(props) {
 
     const numbers = Array.from({length: props.el.length}, (_, k) => k)
     const listItems = numbers.map((number) => 
-        <Equipment week={props.week} item={props.el[number]} day={props.day} user={props.user} allUser={props.allUser}/>
+        <Equipment key={number.id} week={props.week} item={props.el[number]} day={props.day} user={props.user} allUser={props.allUser}/>
     )
     // console.log("In here: ", props.el[0])
     

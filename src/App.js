@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-04-30 06:48:18
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-05-01 23:52:25
+ * @LastEditTime: 2021-05-03 10:10:01
  * @Description: 
  * @FilePath: /reserve_master/src/App.js
  * @GitHub: https://github.com/liuyuchen777
@@ -94,7 +94,11 @@ class App extends React.Component {
       getNextNextWeek()
     ]
     this.week = ['月', '火', '水', '木', '金', '土', '日']
-    this.equipment_list = [new Eqp("Atomic Emission Spectronmeter"), new Eqp("Gas Chromatograph"), new Eqp("Size Exclusion Chromatograph")]
+    this.equipment_list = [
+      new Eqp("Atomic Emission Spectronmeter"), 
+      new Eqp("Gas Chromatograph"), 
+      new Eqp("Size Exclusion Chromatograph")
+    ]
     // current user id
     // all user
     this.allUser = [new User("liuyuchen", 7, "123456"), new User("zhujunyi", 8, "123456")]
@@ -103,7 +107,7 @@ class App extends React.Component {
   render() {
     const numbers = [0, 1, 2, 3, 4, 5, 6]
     const listItems = numbers.map((number) => 
-      <div>
+      <div key={number.id}>
         <Day onFlod={() => {
           let temp = this.state.showFlod
           temp[number] = !temp[number]
@@ -135,7 +139,10 @@ class App extends React.Component {
           <Header user={this.state.user} allUser={this.allUser} />
           <Route path='/' exact render={() => (
             <div>
-              <Login changeUser={(data) => this.setState({user: data})} allUser={this.allUser} changeInfo={(data) => this.setState({login_info: data})} />
+              <Login changeUser={(data) => this.setState({user: data})} 
+                allUser={this.allUser} 
+                changeInfo={(data) => this.setState({login_info: data})} 
+              />
             </div>
           )} />
           <Route path='/main' exact render={() => (
@@ -143,9 +150,12 @@ class App extends React.Component {
               <div>
                 {this.state.user === -1 ? nullComponent :
                 <center>
-                  <Week text="<" onClick={() => {this.setState({week_status: (this.state.week_status===0 ? this.state.week_status : this.state.week_status-1)})}} />
-                  <Placeholder text={this.state.week_status===0 ? "This Week" : this.state.week_status===1 ? "Next Week" : "Next Next Week"} />
-                  <Week text=">" onClick={() => {this.setState({week_status: (this.state.week_status===2 ? this.state.week_status : this.state.week_status+1)})}}/>
+                  <Week text="<" onClick={() => {this.setState({week_status: (this.state.week_status===0 ? 
+                    this.state.week_status : this.state.week_status-1)})}} />
+                  <Placeholder text={this.state.week_status===0 ? "This Week" : this.state.week_status===1 ? 
+                    "Next Week" : "Next Next Week"} />
+                  <Week text=">" onClick={() => {this.setState({week_status: (this.state.week_status===2 ? 
+                    this.state.week_status : this.state.week_status+1)})}}/>
                 </center>
                 }
               </div>
@@ -154,7 +164,10 @@ class App extends React.Component {
                 {this.state.user === -1 ? nullComponent :
                 <center>
                 <Submit />
-                <Logout allFlod={() => this.setState({showFlod: new Array(7).fill(false)})} changeUser={(data) => this.setState({user: data})} changeInfo={(data) => this.setState({login_info: data})}/>
+                <Logout allFlod={() => this.setState({showFlod: new Array(7).fill(false)})} 
+                  changeUser={(data) => this.setState({user: data})} 
+                  changeInfo={(data) => this.setState({login_info: data})}
+                />
                 </center>
                 }
               </div>
