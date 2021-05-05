@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-05-05 00:52:34
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-05-05 01:56:25
+ * @LastEditTime: 2021-05-05 03:24:07
  * @Description:
  * @FilePath: /reserve_master/model/initDB.go
  * @GitHub: https://github.com/liuyuchen777
@@ -13,7 +13,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -21,13 +20,12 @@ import (
 
 var client *mongo.Client
 var ctx context.Context
-var cancel context.CancelFunc
 
 func ConnectDB() {
 	// set connect option
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
 
-	ctx, cancel = context.WithTimeout(context.Background(), 10*time.Second)
+	ctx = context.TODO()
 	// connect mongodb
 	var err error
 	client, err = mongo.Connect(ctx, clientOptions)
@@ -44,7 +42,7 @@ func ConnectDB() {
 }
 
 func Close() {
-	cancel()
+	fmt.Println("Close MongoDB!")
 	if err := client.Disconnect(ctx); err != nil {
 		log.Fatal(err)
 	}

@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-05-01 10:10:36
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-05-01 12:08:58
+ * @LastEditTime: 2021-05-05 07:29:08
  * @Description: 
  * @FilePath: /reserve_master/src/Login.js
  * @GitHub: https://github.com/liuyuchen777
@@ -18,25 +18,19 @@ function Login(props) {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        // console.log("Click Submit Button!")
-
         // judge whether the password is correct
-        console.log(username)
-        const aUser = props.allUser.find(element => element.getName() === username)
-        if (aUser === undefined) {
+        let status = props.loginFun(username, password)
+        if (status === -1) {
             // no input username in database
             props.changeInfo("NO SUCH USER!")
             props.history.push('/fail')
-        } else if (aUser.getPasswd() !== password) {
+        } else if (status === 0) {
             // password error
             props.changeInfo("ERROR PASSWORD!")
             props.history.push('/fail')
         } else {
-            // login successful
-            let num = aUser.getID()
-            console.log(num)
+            console.log("Login Successful! ", status)
             props.changeInfo("LOGIN SUCCESSFUL")
-            props.changeUser(num)
             props.history.push('/main')
         }
         

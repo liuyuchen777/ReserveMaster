@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-04-30 06:48:18
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-05-03 10:10:01
+ * @LastEditTime: 2021-05-05 07:47:32
  * @Description: 
  * @FilePath: /reserve_master/src/App.js
  * @GitHub: https://github.com/liuyuchen777
@@ -23,7 +23,6 @@ import Week from './components/Week'
 import Placeholder from './components/Placeholder'
 import {getThisWeek, getNextWeek, getNextNextWeek} from  './utils/weekFun'
 import { Link } from 'react-router-dom'
-
 /*
  * Equipment Status:
  * -1: no user selecte (white)
@@ -31,53 +30,53 @@ import { Link } from 'react-router-dom'
  * user: this user selected (blue) 
  */
 
-class Eqp {
-  constructor(name) {
-    this.name = name
-    this.Appoint = new Array(3)
-    for (let i = 0; i < this.Appoint.length; i++) {
-      this.Appoint[i] = new Array(7)
-      for (let j=0; j < this.Appoint[i].length; j++) {
-        this.Appoint[i][j] = new Array(8).fill(-1)
-      }
-    }
-    // some test change
-    this.Appoint[0][2][2] = 8
-  }
+// class Eqp {
+//   constructor(name) {
+//     this.name = name
+//     this.Appoint = new Array(3)
+//     for (let i = 0; i < this.Appoint.length; i++) {
+//       this.Appoint[i] = new Array(7)
+//       for (let j=0; j < this.Appoint[i].length; j++) {
+//         this.Appoint[i][j] = new Array(8).fill(-1)
+//       }
+//     }
+//     // some test change
+//     this.Appoint[0][2][2] = 8
+//   }
 
-  getName() {
-    return this.name
-  }
+//   getName() {
+//     return this.name
+//   }
 
-  getState(week, day, time) {
-    return this.Appoint[week][day][time]
-  }
+//   getState(week, day, time) {
+//     return this.Appoint[week][day][time]
+//   }
 
-  changeAppoint(week, day, time, people) {
-    this.Appoint[week][day][time] = people
-    console.log(this.Appoint)
-  }
-}
+//   changeAppoint(week, day, time, people) {
+//     this.Appoint[week][day][time] = people
+//     console.log(this.Appoint)
+//   }
+// }
 
-class User {
-  constructor(name, id, password) {
-    this.name = name
-    this.id = id
-    this.password = password
-  }
+// class User {
+//   constructor(name, id, password) {
+//     this.name = name
+//     this.id = id
+//     this.password = password
+//   }
 
-  getPasswd() {
-    return this.password
-  }
+//   getPasswd() {
+//     return this.password
+//   }
 
-  getName() {
-    return this.name
-  }
+//   getName() {
+//     return this.name
+//   }
 
-  getID() {
-    return this.id
-  }
-}
+//   getID() {
+//     return this.id
+//   }
+// }
 
 class App extends React.Component {
   constructor(props) {
@@ -94,14 +93,36 @@ class App extends React.Component {
       getNextNextWeek()
     ]
     this.week = ['月', '火', '水', '木', '金', '土', '日']
-    this.equipment_list = [
-      new Eqp("Atomic Emission Spectronmeter"), 
-      new Eqp("Gas Chromatograph"), 
-      new Eqp("Size Exclusion Chromatograph")
-    ]
-    // current user id
-    // all user
-    this.allUser = [new User("liuyuchen", 7, "123456"), new User("zhujunyi", 8, "123456")]
+    this.loginJudge = this.loginJudge.bind(this)
+    // data set
+    let httpRequest = new XMLHttpRequest()
+    httpRequest.open('GET', 'http://192.168.231.129:9090/v1/data', false)
+    httpRequest.send()
+    if (httpRequest.status === 200) {
+        var result = JSON.parse(httpRequest.responseText);
+        console.log(result.equipments)
+        console.log(result.users)	
+        this.equipment_list = result.equipments
+        this.allUser = result.users
+    }
+  }
+
+  // login
+  loginJudge(username, password) {
+    // send login information to backend
+    let httpRequest = new XMLHttpRequest()
+    httpRequest.open('POST', 'http://192.168.231.129:9090/v1/login', false)
+    httpRequest.setRequestHeader("Content-Type", "application/json");
+    httpRequest.send(JSON.stringify({
+      "username": username,
+      "password": password,
+    }))
+    if (httpRequest.status === 200) {
+      var result = JSON.parse(httpRequest.responseText);	
+      this.setState({user: result.id})
+    }
+
+    return result.id
   }
 
   render() {
@@ -112,6 +133,7 @@ class App extends React.Component {
           let temp = this.state.showFlod
           temp[number] = !temp[number]
           this.setState({showFlod: temp})
+          // console.log(this.state.user)
         }} day={this.date[this.state.week_status][number]} yobi={this.week[number]}/>
 
         {this.state.showFlod[number] ? <Equipments login_info={this.state.login_info} el={this.equipment_list} 
@@ -139,9 +161,10 @@ class App extends React.Component {
           <Header user={this.state.user} allUser={this.allUser} />
           <Route path='/' exact render={() => (
             <div>
-              <Login changeUser={(data) => this.setState({user: data})} 
-                allUser={this.allUser} 
-                changeInfo={(data) => this.setState({login_info: data})} 
+              <Login user={this.state.user}
+                changeInfo={(data) => this.setState({login_info: data})}
+                loginFun={this.loginJudge}
+                getData={this.getData}
               />
             </div>
           )} />
@@ -163,7 +186,7 @@ class App extends React.Component {
               <div>
                 {this.state.user === -1 ? nullComponent :
                 <center>
-                <Submit />
+                <Submit equipment_list={this.equipment_list} />
                 <Logout allFlod={() => this.setState({showFlod: new Array(7).fill(false)})} 
                   changeUser={(data) => this.setState({user: data})} 
                   changeInfo={(data) => this.setState({login_info: data})}

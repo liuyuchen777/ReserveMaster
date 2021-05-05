@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-04-30 07:29:14
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-05-01 23:02:31
+ * @LastEditTime: 2021-05-05 07:16:43
  * @Description: 
  * @FilePath: /reserve_master/src/components/Equipment.js
  * @GitHub: https://github.com/liuyuchen777
@@ -15,9 +15,9 @@ class Equipment extends Component {
         super(props);
         this.state = {
             stateList: [
-                props.item.Appoint[0][props.day].slice(0, 8), 
-                props.item.Appoint[1][props.day].slice(0, 8), 
-                props.item.Appoint[2][props.day].slice(0, 8), 
+                props.item.appoint[0][props.day].slice(0, 8), 
+                props.item.appoint[1][props.day].slice(0, 8), 
+                props.item.appoint[2][props.day].slice(0, 8), 
             ]
         };
         this.timeList = ['8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00']
@@ -38,12 +38,12 @@ class Equipment extends Component {
         if (this.state.stateList[this.props.week][number] === -1) {
             return this.timeList[number]+'\nAvaliable'
         } else {
-            const user = this.props.allUser.find(element => element.id===this.state.stateList[this.props.week][number])
+            const user = this.props.allUser.find(element => element.Id===this.state.stateList[this.props.week][number])
             let username
             if (user === undefined) {
                 username = "stranger"
             } else {
-                username = user.getName()
+                username = user.Username
             }
             return this.timeList[number]+'\n'+username
         }
@@ -59,14 +59,14 @@ class Equipment extends Component {
                     this.setState({
                         stateList: temp
                     })
-                    this.props.item.changeAppoint(this.props.week, this.props.day, number, this.props.user)
+                    this.props.item.appoint[this.props.week][this.props.day][number] = this.props.user
                 } else if (this.state.stateList[this.props.week][number] === this.props.user) {
                     let temp = this.state.stateList
                     temp[this.props.week][number] = -1
                     this.setState({
                         stateList: temp
                     })
-                    this.props.item.changeAppoint(this.props.week, this.props.day, number, -1)
+                    this.props.item.appoint[this.props.week][this.props.day][number] = -1
                 }
             }} text ={this.textSet(number)} color={this.colorSet(number)} />
         )
@@ -75,7 +75,7 @@ class Equipment extends Component {
 
         return (
             <div >
-                <button className="btn3">{this.props.item.getName()}</button>
+                <button className="btn3">{this.props.item.name}</button>
                 &emsp;
                 {listItems[0]}
                 {listItems[1]}
