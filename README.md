@@ -11,7 +11,7 @@
 
 ## Introduction
 
-A simple react exampel for laboratory apparatus appointemnt.
+A simple react example for laboratory apparatus appointemnt.
 
 ## Test Account
 
@@ -40,9 +40,8 @@ ID | Username | Password
 **2021/5/5**
 - [x] backend basic function
 - [x] automatic update week
-- [ ] figure out password link
 
 ## Memo
 
 run after install mongodb
-first time run function InitDB
+first time run function model.InitDB()
