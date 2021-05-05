@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-05-05 00:48:58
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-05-05 05:50:08
+ * @LastEditTime: 2021-05-05 08:05:11
  * @Description:
  * @FilePath: /reserve_master/model/user.go
  * @GitHub: https://github.com/liuyuchen777
@@ -82,4 +82,13 @@ func AllUser() []UserInfo {
 	// fmt.Printf("Found multiple documents (array of pointers): %#v\n", result)
 
 	return result
+}
+
+// add user
+func AddUser(username, password string, id int) error {
+	newUser := NewUser(username, password, id)
+	insertResult, err := client.Database("equipment").Collection("user").InsertOne(ctx, newUser)
+	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
+	
+	return err
 }

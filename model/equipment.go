@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-05-05 00:49:09
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-05-05 05:37:45
+ * @LastEditTime: 2021-05-05 08:29:51
  * @Description:
  * @FilePath: /reserve_master/model/equipment.go
  * @GitHub: https://github.com/liuyuchen777
@@ -80,4 +80,31 @@ func AllEquipment() []Equipment {
 	// fmt.Printf("Found multiple documents (array of pointers): %#v\n", result)
 
 	return result
+}
+
+// add equipment
+func AddEquipment(name string) error {
+	newEquipment := NewEquipment(name)
+	insertResult, err := client.Database("equipment").Collection("equipment").InsertOne(ctx, newEquipment)
+	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
+
+	return err
+}
+
+// change appointment table at end of every Sunday
+func AppointmentChange() {
+	equipment_list := AllEquipment()
+	for _, v := range equipment_list {
+		v.Appoint[0] = v.Appoint[1]
+		v.Appoint[1] = v.Appoint[2]
+		var newTab [7][8]int
+		for i := 0; i < 7; i++ {
+			for j := 0; j < 8; j++ {
+				newTab[i][j] = -1
+			}
+		}
+		v.Appoint[2] = newTab
+		// update
+		UpdateAppoint(v.Name, v.Appoint)
+	}
 }

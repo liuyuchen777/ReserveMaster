@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-04-30 15:05:41
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-05-01 23:55:36
+ * @LastEditTime: 2021-05-05 08:45:25
  * @Description: 
  * @FilePath: /reserve_master/README.md
  * @GitHub: https://github.com/liuyuchen777
@@ -12,6 +12,13 @@
 ## Introduction
 
 A simple react exampel for laboratory apparatus appointemnt.
+
+## Test Account
+
+ID | Username | Password
+--- | --- | ---
+7 | liuyuchen | 123456
+8 | zhujunyi | 123456
 
 ## Progress
 
@@ -27,5 +34,15 @@ A simple react exampel for laboratory apparatus appointemnt.
 **2021/5/2**
 - [x] change week
 - [x] optimize login 
-- [] database design
-- [] fentch
+- [x] database design
+- [x] AJAX data communicate with backend
+
+**2021/5/5**
+- [x] backend basic function
+- [x] automatic update week
+- [ ] figure out password link
+
+## Memo
+
+run after install mongodb
+first time run function InitDB

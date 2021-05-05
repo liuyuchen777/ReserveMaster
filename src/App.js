@@ -2,7 +2,7 @@
  * @Author: Liu Yuchen
  * @Date: 2021-04-30 06:48:18
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-05-05 07:47:32
+ * @LastEditTime: 2021-05-05 08:42:09
  * @Description: 
  * @FilePath: /reserve_master/src/App.js
  * @GitHub: https://github.com/liuyuchen777
@@ -187,10 +187,7 @@ class App extends React.Component {
                 {this.state.user === -1 ? nullComponent :
                 <center>
                 <Submit equipment_list={this.equipment_list} />
-                <Logout allFlod={() => this.setState({showFlod: new Array(7).fill(false)})} 
-                  changeUser={(data) => this.setState({user: data})} 
-                  changeInfo={(data) => this.setState({login_info: data})}
-                />
+                <Logout />
                 </center>
                 }
               </div>
