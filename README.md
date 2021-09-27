@@ -27,5 +27,5 @@ A simple react exampel for laboratory apparatus appointemnt.
 **2021/5/2**
 - [x] change week
 - [x] optimize login 
-- [] database design
-- [] fentch
+- [x] database design
+- [x] fentch
